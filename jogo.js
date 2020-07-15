@@ -89,7 +89,7 @@ const background = {
         
 }
 
-
+// l
 const getReady = {
     spriteX: 134,
     spriteY: 0,
