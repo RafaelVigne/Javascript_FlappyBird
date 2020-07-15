@@ -86,10 +86,28 @@ const background = {
             background.largura,background.altura 
             )
         } 
-
         
 }
 
+
+const getReady = {
+    spriteX: 134,
+    spriteY: 0,
+    largura: 174,
+    altura: 152,
+    x: (canvas.width / 2) - 174 / 2,
+    y: 50,
+        desenha() {
+            contexto.drawImage(
+                sprites,
+                getReady.spriteX,getReady.spriteY,
+                getReady.largura,getReady.altura, 
+                getReady.x, getReady.y, 
+                getReady.largura,getReady.altura 
+            );
+
+        } 
+}
 
 
 // Forçando FPS
@@ -98,6 +116,7 @@ function loop() {
     background.desenha();
     chao.desenha();
     flappyBird.desenha();
+    getReady.desenha();
     
     requestAnimationFrame (loop);   
 };
