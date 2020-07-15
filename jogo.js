@@ -89,7 +89,6 @@ const background = {
         
 }
 
-// l
 const getReady = {
     spriteX: 134,
     spriteY: 0,
@@ -110,16 +109,59 @@ const getReady = {
 }
 
 
+// [Telas]
+let TelaAtiva = {};
+function mudaDeTela(novaTela){
+    TelaAtiva = novaTela;
+}
+
+const Telas = {
+ INICIO: {
+     desenha(){
+        background.desenha();
+        chao.desenha();
+        getReady.desenha();
+        flappyBird.desenha();
+        
+     },
+
+     click(){
+        mudaDeTela(Telas.JOGO)
+     },
+     atualiza(){
+
+     }
+ }
+};
+
+Telas.JOGO = {
+    desenha(){
+        background.desenha();
+        chao.desenha();
+        flappyBird.desenha();
+    },
+    atualiza(){
+        flappyBird.atualiza();
+    }
+};
+
+
+
 // Forçando FPS
 function loop() {
-    flappyBird.atualiza();
-    background.desenha();
-    chao.desenha();
-    flappyBird.desenha();
-    getReady.desenha();
-    
-    requestAnimationFrame (loop);   
+    TelaAtiva.desenha();
+    TelaAtiva.atualiza();
+ 
+    requestAnimationFrame(loop);
 };
+
+window.addEventListener('click', function(){
+    if(TelaAtiva.click){
+        TelaAtiva.click();
+    }
+})
+
+mudaDeTela(Telas.INICIO)
 
 loop();
 
