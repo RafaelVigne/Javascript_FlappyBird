@@ -8,6 +8,16 @@ sprites.src = './sprites.png';
 const canvas = document.querySelector('canvas');
 const contexto = canvas.getContext('2d');
 
+function fazColisao(flappyBird,chao){
+    const flappyBirdY = flappyBird.y + flappyBird.altura;
+    const chaoY = chao.y
+
+    if (flappyBirdY >= chaoY){
+        return true;
+    }
+    return false;
+}
+
 const flappyBird = {
 spriteX: 0,
 spriteY: 0,
@@ -17,8 +27,15 @@ x: 10,
 y: 50,
 gravidade: 0.25,
 velocidade: 0,
-pulo: 4.6,  
+pulo: 4.6,
+    pula(){
+        flappyBird.velocidade = -flappyBird.pulo;
+    },  
     atualiza(){
+        if(fazColisao(flappyBird,chao)){
+            console.log('fez colisao');
+            return;
+        }
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
         console.log(flappyBird.velocidade);
         flappyBird.y = flappyBird.y + flappyBird.velocidade;
@@ -33,15 +50,13 @@ pulo: 4.6,
         );
         
     },
-    pula(){
-        flappyBird.velocidade = -flappyBird.pulo;
-    }
+
 } 
 
 
 const chao = {
     spriteX: 0,
-    spriteY: 604,
+    spriteY: 610,
     largura: 224,
     altura: 112,
     x: 0,
