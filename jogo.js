@@ -17,6 +17,7 @@ x: 10,
 y: 50,
 gravidade: 0.25,
 velocidade: 0,
+pulo: 4.6,  
     atualiza(){
         flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
         console.log(flappyBird.velocidade);
@@ -31,6 +32,9 @@ velocidade: 0,
             flappyBird.largura,flappyBird.altura // Tamanho do Sprite dentro do canvas
         );
         
+    },
+    pula(){
+        flappyBird.velocidade = -flappyBird.pulo;
     }
 } 
 
@@ -139,6 +143,9 @@ Telas.JOGO = {
         background.desenha();
         chao.desenha();
         flappyBird.desenha();
+    },
+    click(){
+        flappyBird.pula()
     },
     atualiza(){
         flappyBird.atualiza();
