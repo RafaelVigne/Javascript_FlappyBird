@@ -8,52 +8,7 @@ sprites.src = './sprites.png';
 const canvas = document.querySelector('canvas');
 const contexto = canvas.getContext('2d');
 
-function fazColisao(flappyBird,chao){
-    const flappyBirdY = flappyBird.y + flappyBird.altura;
-    const chaoY = chao.y
-
-    if (flappyBirdY >= chaoY){
-        return true;
-    }
-    return false;
-}
-
-const flappyBird = {
-spriteX: 0,
-spriteY: 0,
-largura: 33,
-altura: 24,
-x: 10,
-y: 50,
-gravidade: 0.25,
-velocidade: 0,
-pulo: 4.6,
-    pula(){
-        flappyBird.velocidade = -flappyBird.pulo;
-    },  
-    atualiza(){
-        if(fazColisao(flappyBird,chao)){
-            console.log('fez colisao');
-            return;
-        }
-        flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
-        console.log(flappyBird.velocidade);
-        flappyBird.y = flappyBird.y + flappyBird.velocidade;
-    },
-    desenha() {
-        contexto.drawImage(
-            sprites,
-            flappyBird.spriteX,flappyBird.spriteY, //Sprite X e Sprite Y
-            flappyBird.largura,flappyBird.altura, //Altura e largura
-            flappyBird.x, flappyBird.y,  // Onde vai aparecer a imagem
-            flappyBird.largura,flappyBird.altura // Tamanho do Sprite dentro do canvas
-        );
-        
-    },
-
-} 
-
-
+//chao
 const chao = {
     spriteX: 0,
     spriteY: 610,
@@ -79,6 +34,7 @@ const chao = {
         } 
 }
 
+//fundo
 const background = {
     spriteX: 390,
     spriteY: 0,
@@ -108,6 +64,61 @@ const background = {
         
 }
 
+//flappy bird
+function fazColisao(flappyBird,chao){
+    const flappyBirdY = flappyBird.y + flappyBird.altura;
+    const chaoY = chao.y
+
+    if (flappyBirdY >= chaoY){
+        return true;
+    }
+    return false;
+}
+
+function criaFlappyBird(){
+    const flappyBird = {
+        spriteX: 0,
+        spriteY: 0,
+        largura: 33,
+        altura: 24,
+        x: 10,
+        y: 50,
+        gravidade: 0.25,
+        velocidade: 0,
+        pulo: 4.6,
+            pula(){
+                flappyBird.velocidade = -flappyBird.pulo;
+            },  
+            atualiza(){
+                if(fazColisao(flappyBird,chao)){
+                    console.log('fez colisao');
+        
+                    mudaDeTela(Telas.INICIO);
+                    return;
+                }
+                flappyBird.velocidade = flappyBird.velocidade + flappyBird.gravidade;
+                console.log(flappyBird.velocidade);
+                flappyBird.y = flappyBird.y + flappyBird.velocidade;
+            },
+            desenha() {
+                contexto.drawImage(
+                    sprites,
+                    flappyBird.spriteX,flappyBird.spriteY, //Sprite X e Sprite Y
+                    flappyBird.largura,flappyBird.altura, //Altura e largura
+                    flappyBird.x, flappyBird.y,  // Onde vai aparecer a imagem
+                    flappyBird.largura,flappyBird.altura // Tamanho do Sprite dentro do canvas
+                );
+                
+            }
+        
+        }
+        return flappyBird;
+    }
+
+
+
+
+// Telas
 const getReady = {
     spriteX: 134,
     spriteY: 0,
@@ -128,19 +139,28 @@ const getReady = {
 }
 
 
-// [Telas]
+const globais = {};
 let TelaAtiva = {};
+
+
 function mudaDeTela(novaTela){
     TelaAtiva = novaTela;
-}
+    if(TelaAtiva.inicializa) {
+        TelaAtiva.inicializa();
+      }
+    }
 
 const Telas = {
  INICIO: {
+    inicializa(){
+         globais.flappyBird = criaFlappyBird();
+     },
      desenha(){
+        globais.flappyBird.desenha();
         background.desenha();
         chao.desenha();
         getReady.desenha();
-        flappyBird.desenha();
+    
         
      },
 
@@ -157,16 +177,15 @@ Telas.JOGO = {
     desenha(){
         background.desenha();
         chao.desenha();
-        flappyBird.desenha();
+        globais.flappyBird.desenha();
     },
     click(){
-        flappyBird.pula()
+        globais.flappyBird.pula();
     },
     atualiza(){
-        flappyBird.atualiza();
+        globais.flappyBird.atualiza();
     }
 };
-
 
 
 // Forçando FPS
